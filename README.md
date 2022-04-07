@@ -1,5 +1,5 @@
 # WebPulse
-- a tool used to test REST functions also has additional function for checking if a server is up or not and storing its last time it was down 
+- a tool used to test REST functions also has additional function for checking if a server is up or not and storing its last time it was down in our database also its gonna have a fledged customer support service
 ## User Stories 
 1. as a User i want to be able to test the REST functions and see them in action realtime .
 2. as a User i want i want to be able to check if a certain website or server is down or not . 
