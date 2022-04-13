@@ -1,6 +1,6 @@
 'use strict'
 import  "bootstrap";
-
+import "bootstrap/dist/css/bootstrap.min.css"
 //hook up and make these requests(add,delete,update ...) using axios
 import axios from "axios"
 import prettyBytes from "pretty-bytes"//this is for size to convert it to bytes

@@ -32,7 +32,7 @@ app.get("/webpulse", (req, res) => {
   res.render("webpulse", { title: "check if a website up or down by: the searchers" });
 });
 app.get("/", (req, res) => {
-  res.send("home page")
+  res.json("home page")
 })
 app.listen(PORT, () => {
   console.log(`App is listening on Port ${PORT}`);
