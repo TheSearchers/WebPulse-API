@@ -89,7 +89,7 @@ if (domain.substr(0, prefix.length) !== prefix)
             
             $.ajax({
               method:"POST",
-              url:"/webpulse",
+              url:"/",
               data:{domain:domain},
               success:function(data){
                   console.log(data.domainstatus)
