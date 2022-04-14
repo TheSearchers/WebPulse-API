@@ -65,6 +65,10 @@ app.post('/login',authentication,(req,res)=>{
 app.get("/support",bearerAuth,async (req, res) => {
   res.sendFile(__dirname + "/views/chat.html");
 })
+app.get('/logout', (req, res) => {
+  res.clearCookie('jwt').render('webpulse.ejs');
+  
+ });
 // app.get("/", (req, res) => {
 //   res.json("home page")
 // })
