@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const bodyparser = require("body-parser");
 const bcrypt = require("bcrypt");
@@ -5,14 +6,23 @@ const authentication = require("./middlewares/baicAuth.js");
 const bearerAuth = require("./middlewares/bearerAuth");
 const { users } = require("./models/index.js");
 // const isItOnline = require("./functions/isItOnline")
+
+//socket.io instantiation
 const http = require("http");
-// const PORT = 3000;
+// const http = require("http").Server(express);
+// const port = process.env.PORT;
 const app = express();
 app.use(express.static("./"));
 app.use(express.static(__dirname + "/views"));
+app.use(express.static(__dirname + "/node_modules"));
 app.set("view engine", "ejs");
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
+
+let server = require("http").createServer(app);
+
+let io = require("socket.io")(server);
+
 app.post("/", (req, res) => {
   var http = require("http");
 
@@ -78,11 +88,42 @@ app.post("/register", async (req, res) => {
   // res.render('register.ejs');
 });
 app.post("/login", authentication, (req, res) => {
-  res.sendFile(__dirname + "/views/chat.html");
+  // res.render("/views/chat.html");
+  res.redirect("/support");
 });
+
 app.get("/support", bearerAuth, async (req, res) => {
+  // res.render("chat.html");
   res.sendFile(__dirname + "/views/chat.html");
 });
+
+//listen on every connection
+io.on("connection", (socket) => {
+  console.log("New user connected");
+
+  //default username
+  socket.username = "unnamed";
+
+  //listen on change_username
+  socket.on("change_username", (data) => {
+    socket.username = data.username;
+  });
+
+  //listen on new_message
+  socket.on("new_message", (data) => {
+    //broadcast the new message
+    io.sockets.emit("new_message", {
+      message: data.message,
+      username: socket.username,
+    });
+  });
+
+  //listen on typing
+  socket.on("typing", (data) => {
+    socket.broadcast.emit("typing", { username: socket.username });
+  });
+});
+
 app.get("/logout", (req, res) => {
   res.clearCookie("jwt").render("webpulse.ejs");
 });
@@ -91,10 +132,11 @@ app.get("/logout", (req, res) => {
 // })
 
 function start(port) {
-  app.listen(port, () => {
+  server.listen(port, () => {
     console.log(`running on port ${port}`);
   });
 }
+
 module.exports = {
   app: app,
   start: start,
