@@ -1,65 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <meta http-equiv="Content-Type" const="text/html;charset=UTF-8" />
     <link
-    rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-  />
-    <script src="script.js" type="module"></script>
-    <style>
-      body {
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        height: 100vh;
-        width: 90%;
-        max-width: 1200px;
-      }
-      #message-container {
-        border: 3px solid black;
-        width: 50%;
-        height: 80%;
-        margin-left: 20px;
-        margin-top: -15px;
-      }
-      #message-container div {
-        background-color: #ccc;
-        padding: 5px;
-      }
-      #message-input {
-        margin-left: 20px;
-        font-size: 15px;
-      }
-      #room-input {
-        margin-left: 20px;
-        font-size: 15px;
-      }
-      #room-text {
-        margin-left: 34px;
-        padding-right: 38px;
-        margin-top: 15px;
-      }
-      
-    </style>
-    
+      href="http://fonts.googleapis.com/css?family=Comfortaa"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" type="text/css" href="../chat/styleChat.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <title>Support</title>
   </head>
+
   <body>
-    <div id="message-container"></div>
-    <form id="form">
-      <label for="message-input">message</label>
-      <input type="text" id="message-input" />
-      <button type="submit" id="send-button">Send</button>
-      <br />
-      <label for="room-input">Room</label>
-      <input type="text" id="room-input" />
-      <button type="button" id="room-button">Join</button>
-    </form>
-    
-    <a class="btn btn-primary" href="/logout" role="button">Logout</a>
-    
+    <section>
+      <div id="change_username">
+        <input id="username" type="text" />
+        <button id="send_username" type="button">Change username</button>
+      </div>
+      <a class="btn btn-primary" href="/logout" role="button">Logout</a>
+    </section>
+
+    <section id="chatroom">
+      <section id="feedback"></section>
+    </section>
+
+    <section id="input_zone">
+      <input id="message" class="vertical-align" type="text" />
+      <button id="send_message" class="vertical-align" type="button">
+        Send
+      </button>
+    </section>
+
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../chat/chatApp.js"></script>
   </body>
 </html>
