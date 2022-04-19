@@ -5,7 +5,8 @@ import  "bootstrap";
 import axios from "axios"
 import prettyBytes from "pretty-bytes"//this is for size to convert it to bytes
 import setupEditors from "./setupEditor" //this is fir the JSON section 
-
+var allActions=[];
+const d = new Date();
 //---------------------------------------------------
 //now we want to connect the html elements with the js file using querySelector==>Get the first element with class="example":
 const form = document.querySelector("[data-form]")//where we add the url and sending it 
@@ -32,7 +33,7 @@ document
 queryParamsContainer.append(createKeyValuePair())
 requestHeadersContainer.append(createKeyValuePair())
 //----------------------------------------------------------------
-//whenever we have request we will  intercept this req by using this function 
+//whenever we have request we will  intercept this req by using this function if there is error or not 
 axios.interceptors.request.use(request => {
   request.customData = request.customData || {}
   request.customData.startTime = new Date().getTime()
@@ -46,6 +47,9 @@ function updateEndTime(response) {
   return response
 }
 
+
+
+//if success use(updateEndTime if not updateEndTime(e.response)
 axios.interceptors.response.use(updateEndTime, e => {
   return Promise.reject(updateEndTime(e.response))
 })
@@ -73,12 +77,18 @@ form.addEventListener("submit", e => {
     ,
     data,
   }).catch(e => e).then(response => {//.catch(e => e) this line is for wrong request for example if we enter 1 we will get 200 in the status but if we enter -1 wewill get nothing 
-      document.querySelector("[data-response-section]").classList.remove("d-none")
+
+    //if we have an error we will use interseptors
+      document.querySelector("[data-response-section]").classList.remove("d-none")//response section 
       updateResponseDetails(response)
       updateResponseEditor(response.data)//this is for Json that we recieve it from setupEditer in line 53 
       updateResponseHeaders(response.headers)
       console.log(response)
+      
+
+      allActions.push(new createAction(document.querySelector("[data-url]").value),d.getFullYear()+"/"+d.getMonth()+"/"+d.getDate(),document.querySelector("[data-method]").value);
     })
+
 })
 //-------------------------------------------------------------
 //this is for set the time and size and status
@@ -137,3 +147,7 @@ function keyValuePairsToObjects(container) {
     return { ...data, [key]: value }
   }, {})
 }
+class createAction{
+  constructor(date,urls,method){this.data=date; this.urls=urls; this.method=method;}}
+
+module.exports=allActions;
