@@ -20,8 +20,8 @@ app.set("view engine", "ejs");
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 app.use(morgan("combined"))
-let io = require("socket.io")(server);
 let server = require("http").createServer(app);
+let io = require("socket.io")(server);
 morgan(function (tokens, req, res) {
   return [
     tokens.method(req, res),
