@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const bodyparser = require("body-parser");
 const bcrypt = require("bcrypt");
+const morgan = require('morgan')
 const authentication = require("./middlewares/baicAuth.js");
 const bearerAuth = require("./middlewares/bearerAuth");
 const { users } = require("./models/index.js");
@@ -18,16 +19,21 @@ app.use(express.static(__dirname + "/node_modules"));
 app.set("view engine", "ejs");
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
-
-let server = require("http").createServer(app);
-
+app.use(morgan("combined"))
 let io = require("socket.io")(server);
+let server = require("http").createServer(app);
+morgan(function (tokens, req, res) {
+  return [
+    tokens.method(req, res),
+    tokens.url(req, res),
+    tokens.res(req, res, 'content-length'), '-',
+    tokens['response-time'](req, res), 'ms'
+  ].join(' ')
+})
 
 app.post("/", (req, res) => {
   var http = require("http");
-
   var options = req.body.domain;
-
   var request = http.request(options, function (req) {
     res.json({
       domain: options,
@@ -42,24 +48,6 @@ app.post("/", (req, res) => {
   });
 
   request.end();
-  // let url = req.body.domain;
-  // let status = http.request(url, function (res) {
-  //   if (res.statusCode == 200 || res.statusCode == 301) return true;
-  //   else return false;
-  // });
-  // if (status) {
-  //   res.json({
-  //     domain: url,
-  //     domainstatus: "Site is Running (200)",
-  //   });
-  // }
-  // status.on("error", function (err) {
-  //   res.json({
-  //     domain: url,
-  //     domainstatus: "Site is down (500)",
-  //   });
-  // });
-  // status.end();
 });
 app.get("/", (req, res) => {
   res.render("webpulse", {
@@ -117,7 +105,6 @@ io.on("connection", (socket) => {
       username: socket.username,
     });
   });
-
   //listen on typing
   socket.on("typing", (data) => {
     socket.broadcast.emit("typing", { username: socket.username });
@@ -127,10 +114,6 @@ io.on("connection", (socket) => {
 app.get("/logout", (req, res) => {
   res.clearCookie("jwt").render("webpulse.ejs");
 });
-// app.get("/", (req, res) => {
-//   res.json("home page")
-// })
-
 function start(port) {
   server.listen(port, () => {
     console.log(`running on port ${port}`);
