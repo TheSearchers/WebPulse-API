@@ -50,7 +50,7 @@ localhost:3000
 ![database diagram](https://i.ibb.co/3zHgNKG/database-image-mid-proj.jpg)
 
 
-* Whiteboard planning if the wireframe.
+* Whiteboard planning of the wireframe.
 
 1. Not Signed in
 
