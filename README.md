@@ -12,7 +12,7 @@
 
 * Problem Domain and the solution: The need for an API testing application through an HTTP client that tests HTTP requests while providing support to serve and help the user, from there came our project which dissect RESTful APIs made by others or test ones that have been made by the user personaly while being able to recivie support from a qualified staff.
 
-* User Story:
+### User Story:
 
 1. as a User i want to be able to test the REST functions and see them in action realtime .
 2. as a User i want to be able to check if a certain website or server is down or not .
@@ -20,7 +20,7 @@
 4. as a User i want a simple but effecient Ui .
 5. as a User i want a safe and reliable experience .
 
-* Documentation for your API (endpoints, request and response for each end point ):
+### Documentation for your API (endpoints, request and response for each end point ):
 
 1. Postman Clone:,
 
@@ -45,12 +45,12 @@ localhost:3000
 **/logout**: single type of request using get which responds by exiting the user and returning to the homepage.
 
 
-* The final Database diagram:
+### The final Database diagram:
 
 ![database diagram](https://i.ibb.co/3zHgNKG/database-image-mid-proj.jpg)
 
 
-* Whiteboard planning of the wireframe.
+### Whiteboard planning of the wireframe.
 
 #### Not Signed in
 
