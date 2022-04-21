@@ -58,3 +58,28 @@ localhost:3000
 
 #### Signed in
 ![signed in](https://i.ibb.co/VCP7w7j/signedIn.png)
+
+### Packages : 
+* Express : to setup our server 
+* Nodemon : to start the server 
+* Morgan : For loggers 
+* CodeMirror : to setup the code editor 
+* ejs and bootsrap : for the front end 
+* jsonwebtoken , bcrypt and cookie parser : for authentication 
+* axios : for fetching the requests from the postman clone 
+* http (built in)  : for getting the responsed in webpulse
+* socket.io : to setup the support chat 
+* pg , sqlite3 , sequleize : to setup the database 
+* cors :  allows a server to indicate any origins (domain, scheme, or port) other than its own from which a browser should permit loading resources.
+
+
+### Resources : 
+
+|id |url
+|--|--|
+|1  |  [JsonplaceHolder](https://jsonplaceholder.typicode.com/)|
+|2|[bootstrap](https://react-bootstrap.github.io/)|
+|3|[moesif](https://www.moesif.com/blog/technical/logging/How-we-built-a-Nodejs-Middleware-to-Log-HTTP-API-Requests-and-Responses/)|
+|4|[better programming](https://betterprogramming.pub/simple-chat-application-in-node-js-using-express-mongoose-and-socket-io-ee62d94f5804)|
+|5|[scaleway](https://www.scaleway.com/en/docs/tutorials/socket-io/)|
+|6|[web dev](https://web.dev/add-manifest/#:~:text=The%20web%20app%20manifest%20is,when%20the%20app%20is%20launched.)|
