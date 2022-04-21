@@ -52,9 +52,9 @@ localhost:3000
 
 * Whiteboard planning of the wireframe.
 
-1. Not Signed in
+#### Not Signed in
 
 ![not signed](https://i.ibb.co/CHPpJC2/not-signedin.png)
 
-2. Signed in
+#### Signed in
 ![signed in](https://i.ibb.co/VCP7w7j/signedIn.png)
