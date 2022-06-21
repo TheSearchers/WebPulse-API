@@ -22,7 +22,7 @@
 
 * Documentation for your API (endpoints, request and response for each end point ):
 
-1. Postman Clone:
+1. Postman Clone:,
 
 Start snowpack: Using npm run start.
 
