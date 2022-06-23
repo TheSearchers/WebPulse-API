@@ -19,29 +19,29 @@ let sequelizeOptions = process.env.NODE_ENV === 'production' ? {
     }
 } : {};
 let sequelize = new Sequelize(POSTGRES_URI, sequelizeOptions);
-const usersModel= users(sequelize, DataTypes)
+const userModel= users(sequelize, DataTypes)
   const  workSpaceModel= workSpace(sequelize, DataTypes)
    const savedHistoryModel= savedHistory(sequelize, DataTypes)
     const users_workSpaceModel= users_workSpace(sequelize, DataTypes)
     
-users.belongsToMany(workSpace, {
-     through: users_workSpace,
+userModel.belongsToMany(workSpaceModel, {
+     through: users_workSpaceModel,
      foreignKey: "user_id",
    });
-   workSpace.belongsToMany(users, {
-     through: users_workSpace,
+   workSpaceModel.belongsToMany(userModel, {
+     through: users_workSpaceModel,
      foreignKey: "workSpace_id",
  });
 
-  users.hasMany(savedHistory, { foreignKey: "user_id" });
-  savedHistory.belongsTo(users, { foreignKey: "user_id" });
+  userModel.hasMany(savedHistoryModel, { foreignKey: "user_id" });
+  savedHistoryModel.belongsTo(userModel, { foreignKey: "user_id" });
 
-  workSpace.hasMany(savedHistory, { foreignKey: "workspace_id" });
-  savedHistory.belongsTo(workSpace, { foreignKey: "workspace_id" });
+  workSpaceModel.hasMany(savedHistoryModel, { foreignKey: "workspace_id" });
+  savedHistoryModel.belongsTo(workSpaceModel, { foreignKey: "workspace_id" });
 
 module.exports = {
     db: sequelize,
-    users:usersModel,
+    users:userModel,
     workSpace:workSpaceModel,
     savedHistory:savedHistoryModel,
     users_workSpace:users_workSpaceModel
