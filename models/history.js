@@ -10,11 +10,11 @@ const savedHistory = (sequelize, DataTypes) => sequelize.define('historyTable', 
     },
     user_id: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        // allowNull: false
     },
     workspace_id: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        // allowNull: false
     }
 })
 

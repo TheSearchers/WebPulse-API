@@ -6,6 +6,7 @@ const morgan = require('morgan')
 const authentication = require("./middlewares/baicAuth.js");
 const bearerAuth = require("./middlewares/bearerAuth");
 const { users } = require("./models/index.js");
+const historyRouter = require('./routes/history')
 // const isItOnline = require("./functions/isItOnline")
 
 //socket.io instantiation
@@ -20,8 +21,10 @@ app.set("view engine", "ejs");
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 app.use(morgan("combined"))
+app.use(historyRouter,bearerAuth);
 let server = require("http").createServer(app);
 let io = require("socket.io")(server);
+
 morgan(function (tokens, req, res) {
   return [
     tokens.method(req, res),
@@ -65,7 +68,7 @@ app.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 5);
     console.log(hashedPassword);
     const newUser = await users.create({
-      username: req.body.name,
+      username: req.body.username,
       email: req.body.email,
       password: hashedPassword,
     });
@@ -77,7 +80,8 @@ app.post("/register", async (req, res) => {
 });
 app.post("/login", authentication, (req, res) => {
   // res.render("/views/chat.html");
-  res.redirect("/support");
+  // res.redirect("/support");
+  res.status(200)
 });
 
 app.get("/support", bearerAuth, async (req, res) => {
