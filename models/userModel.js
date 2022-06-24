@@ -1,6 +1,11 @@
 'use strict'
 
 const users = (sequelize, DataTypes) => sequelize.define('usersTable', {
+    user_id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
     username: {
         type: DataTypes.STRING,
         allowNull: false

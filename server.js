@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const authentication = require("./middlewares/baicAuth.js");
 const bearerAuth = require("./middlewares/bearerAuth");
 const { users } = require("./models/index.js");
+const historyRouter = require('./routes/history')
 var cors = require('cors');
 // const isItOnline = require("./functions/isItOnline")
 
@@ -18,10 +19,11 @@ app.use(cors())
 // app.use(express.static("./"));
 // app.use(express.static(__dirname + "/views"));
 // app.use(express.static(__dirname + "/node_modules"));
-// app.set("view engine", "ejs");
+app.set("view engine", "ejs");
 // app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 // app.use(morgan("combined"))
+app.use(historyRouter,bearerAuth);
 let server = require("http").createServer(app);
 let io = require("socket.io")(server, {cors: {origin: "*"}});
 // morgan(function (tokens, req, res) {
