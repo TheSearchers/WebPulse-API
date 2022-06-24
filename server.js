@@ -2,10 +2,11 @@ require("dotenv").config();
 const express = require("express");
 const bodyparser = require("body-parser");
 const bcrypt = require("bcrypt");
-const morgan = require('morgan')
+// const morgan = require('morgan')
 const authentication = require("./middlewares/baicAuth.js");
 const bearerAuth = require("./middlewares/bearerAuth");
 const { users } = require("./models/index.js");
+var cors = require('cors');
 // const isItOnline = require("./functions/isItOnline")
 
 //socket.io instantiation
@@ -13,23 +14,24 @@ const http = require("http");
 // const http = require("http").Server(express);
 // const port = process.env.PORT;
 const app = express();
-app.use(express.static("./"));
-app.use(express.static(__dirname + "/views"));
-app.use(express.static(__dirname + "/node_modules"));
-app.set("view engine", "ejs");
-app.use(bodyparser.urlencoded({ extended: false }));
+app.use(cors())
+// app.use(express.static("./"));
+// app.use(express.static(__dirname + "/views"));
+// app.use(express.static(__dirname + "/node_modules"));
+// app.set("view engine", "ejs");
+// app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
-app.use(morgan("combined"))
+// app.use(morgan("combined"))
 let server = require("http").createServer(app);
-let io = require("socket.io")(server);
-morgan(function (tokens, req, res) {
-  return [
-    tokens.method(req, res),
-    tokens.url(req, res),
-    tokens.res(req, res, 'content-length'), '-',
-    tokens['response-time'](req, res), 'ms'
-  ].join(' ')
-})
+let io = require("socket.io")(server, {cors: {origin: "*"}});
+// morgan(function (tokens, req, res) {
+//   return [
+//     tokens.method(req, res),
+//     tokens.url(req, res),
+//     tokens.res(req, res, 'content-length'), '-',
+//     tokens['response-time'](req, res), 'ms'
+//   ].join(' ')
+// })
 
 app.post("/", (req, res) => {
   var http = require("http");
@@ -69,15 +71,20 @@ app.post("/register", async (req, res) => {
       email: req.body.email,
       password: hashedPassword,
     });
-    res.redirect("/login");
+
+    // res.redirect("/login");
+    res.status(200).json(newUser);
   } catch {
-    res.redirect("/register");
+    res.status(403);
+    // res.redirect("/register");
   }
   // res.render('register.ejs');
 });
 app.post("/login", authentication, (req, res) => {
   // res.render("/views/chat.html");
-  res.redirect("/support");
+  // res.redirect("/support");
+  res.status(200).json(req.user.token)
+  console.log("loggedin");
 });
 
 app.get("/support", bearerAuth, async (req, res) => {
@@ -86,30 +93,44 @@ app.get("/support", bearerAuth, async (req, res) => {
 });
 
 //listen on every connection
-io.on("connection", (socket) => {
-  console.log("New user connected");
+// io.on("connection", (socket) => {
+//   console.log("New user connected");
 
-  //default username
-  socket.username = "unnamed";
+//   //default username
+//   socket.username = "unnamed";
 
-  //listen on change_username
-  socket.on("change_username", (data) => {
-    socket.username = data.username;
-  });
+//   //listen on change_username
+//   socket.on("change_username", (data) => {
+//     socket.username = data.username;
+//   });
 
-  //listen on new_message
-  socket.on("new_message", (data) => {
-    //broadcast the new message
-    io.sockets.emit("new_message", {
-      message: data.message,
-      username: socket.username,
-    });
-  });
-  //listen on typing
-  socket.on("typing", (data) => {
-    socket.broadcast.emit("typing", { username: socket.username });
-  });
-});
+//   //listen on new_message
+//   socket.on("new_message", (data) => {
+//     //broadcast the new message
+//     io.sockets.emit("new_message", {
+//       message: data.message,
+//       username: socket.username,
+//     });
+//   });
+//   //listen on typing
+//   socket.on("typing", (data) => {
+//     socket.broadcast.emit("typing", { username: socket.username });
+//   });
+// });
+io.on('connection', socket => {
+  console.log(`${socket.id } connected `);
+  socket.on('message', ({ name, message }) => {
+   
+    io.emit('message', { name, message })
+  })
+
+  socket.on("disconnect",()=>{
+    console.log(`${socket.id} disconnected `);
+  })
+  // socket.on("typing", (data) => {
+  //   socket.broadcast.emit("typing", { username: socket.username });
+  // });
+})
 
 app.get("/logout", (req, res) => {
   res.clearCookie("jwt").render("webpulse.ejs");
