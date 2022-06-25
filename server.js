@@ -18,7 +18,7 @@ app.use(cors())
 // app.use(express.static("./"));
 // app.use(express.static(__dirname + "/views"));
 // app.use(express.static(__dirname + "/node_modules"));
-// app.set("view engine", "ejs");
+app.set("view engine", "ejs");
 // app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 // app.use(morgan("combined"))
@@ -67,7 +67,7 @@ app.post("/register", async (req, res) => {
     const hashedPassword = await bcrypt.hash(req.body.password, 5);
     console.log(hashedPassword);
     const newUser = await users.create({
-      username: req.body.name,
+      username: req.body.username,
       email: req.body.email,
       password: hashedPassword,
     });
