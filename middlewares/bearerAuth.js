@@ -12,11 +12,13 @@ const { users } = require('../models/index');
 require("./baicAuth");
 const bearerAuth = async (req, res, next) => {
 
-    if (req.headers.cookie) {
-        const tokenInCookie = req.headers.cookie;
+    if (req.headers.authorization) {
+        // const tokenInCookie = req.headers.cookie;
 
-        let keyValueSplit = tokenInCookie.split('=');
-        let token = keyValueSplit.pop()
+        // let keyValueSplit = tokenInCookie.split('=');
+        // let token = keyValueSplit.pop()
+        let bearerHeadersParts = req.headers.authorization.split(' ');
+        let token = bearerHeadersParts.pop();
         try {
             if (token) {
                 const userToken = jwt.verify(token, SECRET);
