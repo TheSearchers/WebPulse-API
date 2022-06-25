@@ -2,10 +2,11 @@ require("dotenv").config();
 const express = require("express");
 const bodyparser = require("body-parser");
 const bcrypt = require("bcrypt");
-const morgan = require('morgan')
+const morgan = require("morgan");
 const authentication = require("./middlewares/baicAuth.js");
 const bearerAuth = require("./middlewares/bearerAuth");
 const { users } = require("./models/index.js");
+const historyRouter = require("./routes/history");
 // const isItOnline = require("./functions/isItOnline")
 
 //socket.io instantiation
@@ -19,17 +20,20 @@ app.use(express.static(__dirname + "/node_modules"));
 app.set("view engine", "ejs");
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
-app.use(morgan("combined"))
+app.use(morgan("combined"));
+app.use(historyRouter, bearerAuth);
 let server = require("http").createServer(app);
 let io = require("socket.io")(server);
 morgan(function (tokens, req, res) {
   return [
     tokens.method(req, res),
     tokens.url(req, res),
-    tokens.res(req, res, 'content-length'), '-',
-    tokens['response-time'](req, res), 'ms'
-  ].join(' ')
-})
+    tokens.res(req, res, "content-length"),
+    "-",
+    tokens["response-time"](req, res),
+    "ms",
+  ].join(" ");
+});
 
 app.post("/", (req, res) => {
   var http = require("http");
