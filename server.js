@@ -119,21 +119,53 @@ app.get("/support", bearerAuth, async (req, res) => {
 //     socket.broadcast.emit("typing", { username: socket.username });
 //   });
 // });
-io.on('connection', socket => {
-  console.log(`${socket.id } connected `);
-  socket.on('message', ({ name, message }) => {
+// io.on('connection', socket => {
+//   console.log(`${socket.id } connected `);
+//   socket.on('message', ({ name, message }) => {
    
-    io.emit('message', { name, message })
-  })
+//     io.emit('message', { name, message })
+//   })
 
-  socket.on("disconnect",()=>{
-    console.log(`${socket.id} disconnected `);
-  })
+//   socket.on("disconnect",()=>{
+//     console.log(`${socket.id} disconnected `);
+//   })
   // socket.on("typing", (data) => {
   //   socket.broadcast.emit("typing", { username: socket.username });
   // });
-})
+//})
+io.use((socket, next) => {
+  const username = socket.handshake.auth.fetched_userName;
+  socket.username = username;
+  next();
+});
 
+io.on("connection", (socket) => {
+  const users = [];
+  for (let [id, socket] of io.of("/").sockets) {
+    users.push({
+      userID: id,
+      username: socket.username,
+      key: id,
+    });
+  }
+  socket.emit("users", users);
+  console.log(users);
+
+  socket.broadcast.emit("user connected", {
+    userID: socket.id,
+    username: socket.username,
+    key: socket.id,
+    self: false,
+  });
+
+  socket.on("private message", ({ content, to }) => {
+    console.log("Content:", content, " To:", to);
+    socket.to(to).emit("private message", {
+      content,
+      from: socket.id,
+    });
+  });
+});
 app.get("/logout", (req, res) => {
   res.clearCookie("jwt").render("webpulse.ejs");
 });
