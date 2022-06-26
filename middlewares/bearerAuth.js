@@ -11,7 +11,7 @@ const jwt = require('jsonwebtoken');
 const { users } = require('../models/index');
 require("./baicAuth");
 const bearerAuth = async (req, res, next) => {
-
+console.log(req.headers.authorization);
     if (req.headers.authorization) {
         // const tokenInCookie = req.headers.cookie;
 

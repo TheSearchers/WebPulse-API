@@ -7,6 +7,7 @@ const authentication = require("./middlewares/baicAuth.js");
 const bearerAuth = require("./middlewares/bearerAuth");
 const { users } = require("./models/index.js");
 const historyRouter = require('./routes/history')
+const workSpaceRouter = require('./routes/workspace')
 var cors = require('cors');
 // const isItOnline = require("./functions/isItOnline")
 
@@ -23,7 +24,12 @@ app.set("view engine", "ejs");
 // app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 // app.use(morgan("combined"))
-app.use(historyRouter,bearerAuth);
+
+app.use(historyRouter);
+app.use(workSpaceRouter);
+
+
+
 let server = require("http").createServer(app);
 let io = require("socket.io")(server, {cors: {origin: "*"}});
 // morgan(function (tokens, req, res) {
