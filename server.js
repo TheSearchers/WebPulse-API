@@ -8,6 +8,7 @@ const bearerAuth = require("./middlewares/bearerAuth");
 const { users } = require("./models/index.js");
 const historyRouter = require('./routes/history')
 const workSpaceRouter = require('./routes/workspace')
+const usersRouter = require('./routes/users')
 var cors = require('cors');
 // const isItOnline = require("./functions/isItOnline")
 
@@ -27,6 +28,7 @@ app.use(bodyparser.json());
 
 app.use(historyRouter);
 app.use(workSpaceRouter);
+app.use(usersRouter);
 
 
 
