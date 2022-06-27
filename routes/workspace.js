@@ -1,6 +1,6 @@
 "use strict";
 const express = require("express");
-const {savedHistory,users,workSpace} = require("../models/index");
+const {savedHistory,users,workSpace,users_workSpace} = require("../models/index");
 const router = express.Router();
 const bearerAuth = require('../middlewares/bearerAuth')
 
@@ -19,29 +19,67 @@ res.status(200).json(createWorkSpace);
 
 
 
-//   router.get("/workspace/:id/saved-req",bearerAuth, savedReqHandler);
+  router.get("/workspace/:id",bearerAuth, getOneWorkSpaceHandler);
 
-//   async function savedReqHandler (req,res){
-//     try {
-//       let fetchData = await savedHistory.findAll({where:{workspace_id:req.params.id}, include:[users]});
-// res.status(200).json(fetchData)
-//     } catch (error) {
-//       res.status(500).json(error)
-//     }
+  async function getOneWorkSpaceHandler (req,res){
+    try {
+      let fetchData = await workSpace.findOne({where:{workspace_id:req.params.id}, include:[users]});
+res.status(200).json(fetchData)
+    } catch (error) {
+      res.status(500).json(error)
+    }
 
-//   }
+  }
+
+  router.get("/workspace",bearerAuth, getWorkSpaceHandler);
+
+  async function getWorkSpaceHandler (req,res){
+    try {
+      let fetchData = await workSpace.findAll();
+res.status(200).json(fetchData)
+    } catch (error) {
+      res.status(500).json(error)
+    }
+
+  }
   
-//   router.delete("/workspace/:id/remove-req/:historyId", bearerAuth, deleteReqHandler);
+  router.delete("/workspace/:id", bearerAuth, deleteWorkSpaceHandler);
 
-//   async function deleteReqHandler (req,res){
-//     try {
-//       let historyId= req.params.historyId;
-// await savedHistory.destroy({where:{id:historyId}});
-// res.status(200).json(`history with id=${historyId} was deleted`)
-//     } catch (error) {
-//       res.status(500).json(error)
-//     }
+  async function deleteWorkSpaceHandler (req,res){
+    try {
+await workSpace.destroy({where:{workspace_id:req.params.id}});
+res.status(200).json(`Workspace with id=${req.params.id} was deleted`)
+    } catch (error) {
+      res.status(500).json(error)
+    }
 
-//   }
+  }
 
+router.post("/workspace-join/:id", bearerAuth, joinHandler);
+
+
+async function joinHandler(req, res) {
+
+  let userId = req.user.dataValues.user_id;
+
+  const newUserWorkSpace = await users_workSpace.create({
+    user_id: userId,
+    workspace_id: req.params.id,
+  });
+  res.status(200).json(newUserWorkSpace);
+}
+
+router.post("/workspace-addfriend/:id/:friendId", bearerAuth, addFriendHandler);
+
+
+async function addFriendHandler(req, res) {
+console.log(req.params.friendId);
+  let friendId = req.params.friendId;
+
+  const newUserWorkSpace = await users_workSpace.create({
+    user_id: friendId,
+    workspace_id: req.params.id,
+  });
+  res.status(200).json(newUserWorkSpace);
+}
   module.exports = router
