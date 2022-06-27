@@ -8,8 +8,12 @@ const bearerAuth = require('../middlewares/bearerAuth')
 router.post("/workspace",bearerAuth, createReqHandler);
 async function createReqHandler (req,res){
 try {
-  let body = req.body;
-let createWorkSpace = await workSpace.create(body)
+  // console.log(req.data);
+  let body = req.body.workspace_name;
+  // console.log("dfsdfsd",body);
+let createWorkSpace = await workSpace.create({
+  workspace_name:body,
+})
 res.status(200).json(createWorkSpace);
 } catch (error) {
   res.status(500).json(error)
@@ -18,7 +22,7 @@ res.status(200).json(createWorkSpace);
     }        
 
 
-
+// get workspace by id
   router.get("/workspace/:id",bearerAuth, getOneWorkSpaceHandler);
 
   async function getOneWorkSpaceHandler (req,res){
@@ -30,7 +34,7 @@ res.status(200).json(fetchData)
     }
 
   }
-
+//get all workspaces for all users
   router.get("/workspace",bearerAuth, getWorkSpaceHandler);
 
   async function getWorkSpaceHandler (req,res){

@@ -93,7 +93,7 @@ app.post("/register", async (req, res) => {
 app.post("/login", authentication, (req, res) => {
   // res.render("/views/chat.html");
   // res.redirect("/support");
-  res.status(200).json(req.user.token)
+  res.status(200).json(req.user)
   console.log("loggedin");
 });
 

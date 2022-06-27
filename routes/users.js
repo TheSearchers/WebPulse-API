@@ -7,10 +7,11 @@ const bearerAuth = require('../middlewares/bearerAuth')
     
 
 
-
+//get work spaces
   router.get("/user/:id",bearerAuth, getUserWorkSpaceHandler);
 
   async function getUserWorkSpaceHandler (req,res){
+    // console.log("ttttttttt",req.params.id);
     try {
       let fetchData = await users.findOne({where:{user_id:req.params.id}, include:[workSpace,savedHistory]});
 res.status(200).json(fetchData)
