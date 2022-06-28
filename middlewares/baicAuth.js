@@ -27,9 +27,6 @@ const authentication = async (req, res, next) => {
             if (valid) {
                 req.user = user;
                 let newToken = jwt.sign({ username: user.username }, SECRET, { expiresIn: 900000 });
-                // res.cookie("jwt", newToken, {
-                //     httpOnly: true
-                // });
                 user.token = newToken;
                 next();
             } else {

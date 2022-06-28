@@ -7,11 +7,10 @@ const bearerAuth = require('../middlewares/bearerAuth')
     
 
 
-//get work spaces
+
   router.get("/user/:id",bearerAuth, getUserWorkSpaceHandler);
 
   async function getUserWorkSpaceHandler (req,res){
-    // console.log("ttttttttt",req.params.id);
     try {
       let fetchData = await users.findOne({where:{user_id:req.params.id}, include:[workSpace,savedHistory]});
 res.status(200).json(fetchData)
@@ -32,34 +31,6 @@ res.status(200).json(fetchData)
     }
 
   }
-  // async function findOneUser(){
-  //   try {
-  //     const user = await this.models.User.findOne({where: {firstName: 'wdj'}});
-  //     return user;
-  //   } catch (err) {
-  //     return err;
-  //   }
-  // }
-
-  // async function followUser(){
-  //   try {
-  //     const currentUser = await this.findOneUser();
-  //     const toFollowUser = await this.models.User.findOne({where: {firstName: 'tom'}});
-  //     currentUser.addUser(toFollowUser);
-  //     return currentUser.getUser();
-  //   } catch (err) {
-  //     return err;
-  //   }
-  // }
-
-  // router.post('/follow', async (req, res) => {
-  //   try{
-  //     const followedList = await userService.followUser();
-  //     res.send(followedList);
-  //   }catch(err){
-  //     return next(err);
-  //   }
-  // });
 
 
   module.exports = router

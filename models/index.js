@@ -23,16 +23,6 @@ const userModel= users(sequelize, DataTypes)
    const savedHistoryModel= savedHistory(sequelize, DataTypes)
     const users_workSpaceModel= users_workSpace(sequelize, DataTypes)
 
-    // userModel.belongsToMany(userModel, {
-    //     as:"User", // forgin key alias
-    //     through: "follow", // table which wil be created automatically
-    //     foreignKey: "user_id",
-    //   });
-    //   userModel.belongsToMany(userModel, {
-    //     as:"Followed", // forgin key alias
-    //     through: "follow", // joined table from above
-    //     foreignKey: "followed_id",
-    // });
 
 userModel.belongsToMany(workSpaceModel, {
      through: users_workSpaceModel,
