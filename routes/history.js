@@ -9,6 +9,7 @@ router.post("/workspace/:id/create-req",bearerAuth, createReqHandler);
 async function createReqHandler (req,res){
 try {
   let body = req.body;
+  console.log(body);
 let createUrl = await savedHistory.create({
     ...body,
     user_id:req.user.dataValues.user_id,

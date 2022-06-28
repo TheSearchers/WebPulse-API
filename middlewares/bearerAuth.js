@@ -13,10 +13,6 @@ require("./baicAuth");
 const bearerAuth = async (req, res, next) => {
 console.log(req.headers.authorization);
     if (req.headers.authorization) {
-        // const tokenInCookie = req.headers.cookie;
-
-        // let keyValueSplit = tokenInCookie.split('=');
-        // let token = keyValueSplit.pop()
         let bearerHeadersParts = req.headers.authorization.split(' ');
         let token = bearerHeadersParts.pop();
         try {

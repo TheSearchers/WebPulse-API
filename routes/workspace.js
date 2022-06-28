@@ -5,7 +5,7 @@ const router = express.Router();
 const bearerAuth = require('../middlewares/bearerAuth')
 
 
-router.post("/workspace",bearerAuth, createReqHandler);
+router.post("/workspace/:id",bearerAuth, createReqHandler);
 async function createReqHandler (req,res){
 try {
   // console.log(req.data);
@@ -14,6 +14,13 @@ try {
 let createWorkSpace = await workSpace.create({
   workspace_name:body,
 })
+console.log("fgdgdf",req.params.id);
+console.log("fgdgdf",createWorkSpace.workspace_id);
+const newUserWorkSpace = await users_workSpace.create({
+  user_id: req.params.id,
+  workspace_id:createWorkSpace.workspace_id ,
+});
+
 res.status(200).json(createWorkSpace);
 } catch (error) {
   res.status(500).json(error)
@@ -73,17 +80,26 @@ async function joinHandler(req, res) {
   res.status(200).json(newUserWorkSpace);
 }
 
-router.post("/workspace-addfriend/:id/:friendId", bearerAuth, addFriendHandler);
+router.post("/workspace-addfriend/:id", bearerAuth, addFriendHandler);
 
 
 async function addFriendHandler(req, res) {
-console.log(req.params.friendId);
-  let friendId = req.params.friendId;
+  let body = req.body.workspace_name;
+  console.log(body);
 
+try{
+  
+  const friend=await users.findOne({where :{email:body}})
   const newUserWorkSpace = await users_workSpace.create({
-    user_id: friendId,
+    user_id: friend.user_id,
     workspace_id: req.params.id,
   });
+  console.log(newUserWorkSpace);
   res.status(200).json(newUserWorkSpace);
+}catch{
+  console.log("not found")
+  res.send("user not found")
+}
+
 }
   module.exports = router
