@@ -43,16 +43,17 @@ app.post("/", (req, res) => {
   request.end();
 });
 app.get("/", (req, res) => {
-  res.render("webpulse", {
-    title: "check if a website up or down by: the searchers",
-  });
+  // res.render("webpulse", {
+  //   title: "check if a website up or down by: the searchers",
+  // });
+  res.send("home page")
 });
-app.get("/login", (req, res) => {
-  res.render("login.ejs");
-});
-app.get("/register", (req, res) => {
-  res.render("register.ejs");
-});
+// app.get("/login", (req, res) => {
+//   res.render("login.ejs");
+// });
+// app.get("/register", (req, res) => {
+//   res.render("register.ejs");
+// });
 app.post("/register", async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 5);
@@ -72,9 +73,9 @@ app.post("/login", authentication, (req, res) => {
   console.log("loggedin");
 });
 
-app.get("/support", bearerAuth, async (req, res) => {
-  res.sendFile(__dirname + "/views/chat.html");
-});
+// app.get("/support", bearerAuth, async (req, res) => {
+//   res.sendFile(__dirname + "/views/chat.html");
+// });
 
 
 //----------------------------
